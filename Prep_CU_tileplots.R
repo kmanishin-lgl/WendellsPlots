@@ -1,7 +1,3 @@
-rm(list=ls())
-
-library(tidyverse)
-library(stringr)
 
 nuseds <- read_csv(file = "Data/NuSEDS_20240110.csv")
 nuseds$WATERBODY <- str_to_title(nuseds$WATERBODY)
@@ -59,9 +55,9 @@ pssi.sites <-  mdfa.sites %>%
 # )
 
 
-if (view.data) {
-  pssi.sites %>% count(SPECIES_QUALIFIED,CU_NAME) %>% spread(SPECIES_QUALIFIED, n) %>% View(title="waterbody pops")
-}
+# if (view.data) {
+#   pssi.sites %>% count(SPECIES_QUALIFIED,CU_NAME) %>% spread(SPECIES_QUALIFIED, n) %>% View(title="waterbody pops")
+# }
 
 pssi.sites.wide <- pssi.sites %>% 
   count(SYSTEM_SITE,Y_LAT, X_LONGT, WATERSHED_CDE, FWA_WATERSHED_CDE, SPECIES_QUALIFIED, POP_ID) %>% 
@@ -70,9 +66,9 @@ pssi.sites.wide <- pssi.sites %>%
   summarize(POP_ID = paste(POP_ID, collapse = ", "), .groups = "drop")%>% 
   spread(SPECIES_QUALIFIED, POP_ID) 
 
-if (view.data){
-  pssi.sites.wide %>% select(WATERBODY, CK:SER) %>% View(title = "POP_ID by Waterbody")
-}
+# if (view.data){
+#   pssi.sites.wide %>% select(WATERBODY, CK:SER) %>% View(title = "POP_ID by Waterbody")
+# }
 
 # mdfa.sites %>% 
 #   distinct(SYSTEM_SITE,Y_LAT, X_LONGT) %>% 
