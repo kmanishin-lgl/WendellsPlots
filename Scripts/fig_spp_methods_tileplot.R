@@ -1,9 +1,3 @@
-rm(list=ls())
-
-library(tidyverse)
-library(stringr)
-
-source('Prep_CU_tileplots.R')
 
 # Waterbody Masterlist + Ordering ------------------------------------------
 # List of unqiue water bodies that will be displayed in the report which
@@ -15,10 +9,9 @@ source('Prep_CU_tileplots.R')
 # figure CU membership
 
 
-name.master <- pssi.nuseds %>% 
-  # mutate(WATERBODY = toupper(WATERBODY)) %>%  # fix inconsistent Clearwater Creek
-  group_by(AREA, WATERBODY, GAZETTED_NAME, LOCAL_NAME_1,LOCAL_NAME_2,SYSTEM_SITE,
-           RUN_TYPE, POP_ID, CU_INDEX, CU_NAME, SPECIES_QUALIFIED, IS_INDICATOR, SppGroup) %>% 
+name.master <- spp.nuseds %>% 
+  mutate(WATERBODY = toupper(WATERBODY)) %>%  # fix inconsistent Clearwater Creek
+  group_by(AREA, WATERBODY, GAZETTED_NAME, LOCAL_NAME_1,LOCAL_NAME_2, SYSTEM_SITE, RUN_TYPE, POP_ID, CU_INDEX, CU_NAME, SPECIES_QUALIFIED, IS_INDICATOR) %>% 
   summarize(
     EscAvailable = any(Escapement >0),
     .groups = "drop"
@@ -27,19 +20,24 @@ name.master <- pssi.nuseds %>%
 dim(name.master)
 
 (check <- name.master %>% count(WATERBODY) %>% filter(n>1))
-(check <- name.master %>% count(WATERBODY, RUN_TYPE, SppGroup) %>% count(WATERBODY) %>%  filter(n>1))
+(check <- name.master %>% count(WATERBODY, RUN_TYPE) %>% count(WATERBODY) %>%  filter(n>1))
 
 name.master %>% filter(WATERBODY != SYSTEM_SITE)
 
 name.master <- name.master %>% 
   mutate(
     DisplayName = case_when(
-      WATERBODY %in% check$WATERBODY ~ paste0(str_to_title(WATERBODY), " (Run", RUN_TYPE, SppGroup, ")"),
+      str_to_title(WATERBODY) == "Henderson Lake" ~ "Hucuktlis Lake", 
+      str_to_title(WATERBODY) == "Little Toquart Creek" ~ "Little Toquaht Creek", 
+      str_to_title(WATERBODY) == "Little Toquart Creek" ~ "Little Toquaht Creek", 
+      str_to_title(WATERBODY) == "Toquart River" ~ "Toquaht River", 
+      str_to_title(WATERBODY) == "Power River" ~ "Hisnit River", 
+      str_to_title(WATERBODY) == "Coeur D'alene Creek" ~ "Coeur D'Alene Creek",
+      WATERBODY %in% check$WATERBODY ~ paste0(str_to_title(WATERBODY), " (Run", RUN_TYPE, ")"),
       TRUE~str_to_title(WATERBODY)
     )
-  ) %>%
-  distinct(AREA, WATERBODY, SYSTEM_SITE,DisplayName, POP_ID, IS_INDICATOR, 
-           CU_INDEX, CU_NAME, EscAvailable, SppGroup) %>% #NOTE: overlapping PINK even and PINK odd?
+  ) %>% 
+  distinct(AREA, WATERBODY, SYSTEM_SITE, DisplayName, POP_ID, IS_INDICATOR, CU_INDEX, CU_NAME, EscAvailable) %>% #NOTE: overlapping PINK even and PINK odd?
   arrange(CU_INDEX, DisplayName)  %>% 
   mutate(
     FontFace = ifelse(IS_INDICATOR == "Y", "bold", "plain"),
@@ -65,18 +63,17 @@ cu.cuts <- which(duplicated(name.master$CU_INDEX) == FALSE) %>% tail(n=-1) - 0.5
 
 
 
-esc.status <- 
-  left_join(
-  x = pssi.nuseds %>% mutate(WATERBODY = toupper(WATERBODY)),
-  y = name.master %>% select(WATERBODY, POP_ID, DisplayName, SppGroup),
-  by = join_by(WATERBODY, POP_ID, SppGroup)
-) %>%
+esc.status <- left_join(
+  x = spp.nuseds %>% mutate(WATERBODY = toupper(WATERBODY)),
+  y = name.master %>% select(WATERBODY, POP_ID, DisplayName),
+  by = join_by(WATERBODY, POP_ID)
+) %>% 
   mutate(
     StreamName = factor(
-      x = DisplayName,
+      x = DisplayName, 
       levels = name.master$DisplayName
     )
-  ) %>%
+  ) %>% 
   mutate(
     EscAvail = case_when(
       is.na(Escapement) ~ FALSE,
@@ -115,7 +112,7 @@ esc.status <-
       str_detect(ESTIMATE_CLASSIFICATION, "UNKNOWN") ~ "Unknown"
     )
   )  %>% 
-  complete(SPECIES, ANALYSIS_YR, DisplayName, fill = list(Status = "No Record"))
+  complete(SPECIES, ANALYSIS_YR, StreamName, fill = list(Status = "No Record"))
 
 
 n.display <- esc.status %>% distinct(StreamName) %>% nrow
@@ -128,14 +125,26 @@ if (n.display != nrow(name.master)) stop("Species specific method figure data is
 
 
 # Prepare CU names and positions for geom_text
-cu.labels <- name.master %>% 
-  mutate(Duplicated = duplicated(CU_INDEX)) %>% 
-  filter(!Duplicated | Order == max(Order)) %>% 
-  mutate(
-    midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2 - 0.5, NA)
-  ) %>% 
-  filter(!is.na(midpoint)) %>% 
-  select(CU_INDEX, CU_NAME, midpoint)
+if(spp == "Sockeye") {
+  cu.labels <- name.master %>% 
+    mutate(Duplicated = duplicated(CU_INDEX)) %>% 
+    filter(!Duplicated | Order == max(Order)) %>% 
+    mutate(
+      midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2-1, last(x)-.5)
+    ) %>% 
+    filter(!is.na(midpoint)) %>% 
+    select(CU_INDEX, CU_NAME, midpoint)
+}else{
+  cu.labels <- name.master %>% 
+    mutate(Duplicated = duplicated(CU_INDEX)) %>% 
+    filter(!Duplicated | Order == max(Order)) %>% 
+    mutate(
+      midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2-.5, NA)
+    )%>% 
+    filter(!is.na(midpoint)) %>% 
+    select(CU_INDEX, CU_NAME, midpoint)
+}
+
 
 buffer <- cu.labels$CU_INDEX %>% nchar %>% max
 
@@ -188,7 +197,7 @@ p.monitoring <-   esc.status %>%
     legend.title = element_blank(),
     panel.grid.major.y = element_line(linewidth = name.master$LineWidth , colour =name.master$LineColor)
   )
-p.monitoring
+# p.monitoring
 
 
 

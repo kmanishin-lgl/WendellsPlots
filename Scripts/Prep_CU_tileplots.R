@@ -5,7 +5,6 @@ view.data = FALSE
 mdfa_streams <- read.csv("Data/NuSEDs_MDFA.csv",
                          colClasses = c("SPECIES_QUALIFIED" = "factor"))
 # names(mdfa_streams)[names(mdfa_streams) == 'SPECIES_QUALIFIED'] <- 'SPECIES'
-
 pssi <- read.csv("Data/PSSI_streams.csv")
 pssi$WATERBODY <- str_squish(pssi$WATERBODY) %>%str_to_upper()
 
@@ -84,9 +83,11 @@ pssi.sites.wide <- pssi.sites %>%
 # View(pssi.sites)
 # View(pssi.sites.wide)
 
+
+
 # DEFINE: PSSI NuSEDS -------------------------------------------------
 # Updating the filtering method from version 3, 
-source('data_nuseds.R')
+source('Scripts/data_nuseds.R')
 
 pssi.nuseds <- nuseds %>% 
   # filter(WATERBODY %in% atlegay.sites$SYSTEM_SITE) %>%
@@ -122,9 +123,42 @@ pssi.nuseds <- nuseds %>%
       ),
     by = join_by(POP_ID ,YearType)
   ) 
+# Priority Stream Infill ---------------------------------------------------
+# If required we need to add blank records for priority streams not currently
+# covered in NuSEDS
+
+# Determine Priority Streams available in data
+present.streams <- pssi.nuseds %>% 
+  # filter(!is.na(Escapement)) %>%
+  select(WATERBODY) %>%
+  unique()
+
+miss.priority <- setdiff(str_squish(pssi$WATERBODY), present.streams$WATERBODY)
 
 
-# Add PMax values relative to entire time series
+# Update NuSEDS Escapement 
+
+# # Complete any missing priority streams
+# if (exists('miss.priority')) {
+#   if (length(miss.priority)>0) {
+#     
+#     # warning("Priority infill uses RunType = 'Spring' instead of 'Fall' - Cowichan workaround.")
+#     
+#     pssi.nuseds <- pssi.nuseds %>%
+#       complete(
+#         WATERBODY = miss.priority,
+#         SPECIES = "Chinook",
+#         Year = 2020,
+#         RunType = "Fall",
+#       ) %>%
+#       mutate(
+#         RunType = factor(RunType, levels = c("Early and Summer", "Spring", "Summer", "Fall"))
+#       )
+#   }
+# } 
+
+
+# Add PMax values relative to entire time series------------------------------
 pssi.nuseds <- left_join(
   x = pssi.nuseds,
   y = pssi.nuseds %>% 

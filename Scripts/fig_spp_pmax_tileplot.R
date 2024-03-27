@@ -27,9 +27,12 @@ name.master %>% filter(WATERBODY != SYSTEM_SITE)
 name.master <- name.master %>% 
   mutate(
     DisplayName = case_when(
-      str_to_title(WATERBODY) == "Clearwater Creek" ~ "Clearwater Creek", # Two different capitalization in NuSEDS
-      WATERBODY == "MCKERCHER CREEK" ~ paste0(str_to_title(LOCAL_NAME_1), "/", "McKercher Creek"), # Hyacinthe Creek/McKercher Creek (main/trib)
-      WATERBODY == "CLEAR CREEK"     ~ paste0(str_to_title(LOCAL_NAME_1), "/", str_to_title(WATERBODY)),
+      str_to_title(WATERBODY) == "Henderson Lake" ~ "Hucuktlis Lake", 
+      str_to_title(WATERBODY) == "Little Toquart Creek" ~ "Little Toquaht Creek", 
+      str_to_title(WATERBODY) == "Little Toquart Creek" ~ "Little Toquaht Creek", 
+      str_to_title(WATERBODY) == "Toquart River" ~ "Toquaht River", 
+      str_to_title(WATERBODY) == "Power River" ~ "Hisnit River", 
+      str_to_title(WATERBODY) == "Coeur D'alene Creek" ~ "Coeur D'Alene Creek",
       WATERBODY %in% check$WATERBODY ~ paste0(str_to_title(WATERBODY), " (Run", RUN_TYPE, ")"),
       TRUE~str_to_title(WATERBODY)
     )
@@ -96,14 +99,25 @@ if (n.display != nrow(name.master)) stop("CU Pmax missing display streams")
 
 
 # Prepare CU names and positions for geom_text
+if(spp == "Sockeye") {
 cu.labels <- name.master %>% 
   mutate(Duplicated = duplicated(CU_INDEX)) %>% 
   filter(!Duplicated | Order == max(Order)) %>% 
   mutate(
-    midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2 - 0.5, NA)
+    midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2-1, last(x)-.5)
   ) %>% 
   filter(!is.na(midpoint)) %>% 
   select(CU_INDEX, CU_NAME, midpoint)
+  }else{
+cu.labels <- name.master %>% 
+  mutate(Duplicated = duplicated(CU_INDEX)) %>% 
+  filter(!Duplicated | Order == max(Order)) %>% 
+  mutate(
+        midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2-.5, NA)
+  )%>% 
+  filter(!is.na(midpoint)) %>% 
+  select(CU_INDEX, CU_NAME, midpoint)
+}
 
 buffer <- cu.labels$CU_INDEX %>% nchar %>% max
 
