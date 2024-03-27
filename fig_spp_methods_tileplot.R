@@ -27,21 +27,19 @@ name.master <- pssi.nuseds %>%
 dim(name.master)
 
 (check <- name.master %>% count(WATERBODY) %>% filter(n>1))
-(check <- name.master %>% count(WATERBODY, RUN_TYPE) %>% count(WATERBODY) %>%  filter(n>1))
+(check <- name.master %>% count(WATERBODY, RUN_TYPE, SppGroup) %>% count(WATERBODY) %>%  filter(n>1))
 
 name.master %>% filter(WATERBODY != SYSTEM_SITE)
 
 name.master <- name.master %>% 
   mutate(
     DisplayName = case_when(
-      str_to_title(WATERBODY) == "Clearwater Creek" ~ "Clearwater Creek", # Two different capitalization in NuSEDS
-      WATERBODY == "MCKERCHER CREEK" ~ paste0(str_to_title(LOCAL_NAME_1), "/", "McKercher Creek"), # Hyacinthe Creek/McKercher Creek (main/trib)
-      WATERBODY == "CLEAR CREEK"     ~ paste0(str_to_title(LOCAL_NAME_1), "/", str_to_title(WATERBODY)),
-      WATERBODY %in% check$WATERBODY ~ paste0(str_to_title(WATERBODY), " (Run", RUN_TYPE, ")"),
+      WATERBODY %in% check$WATERBODY ~ paste0(str_to_title(WATERBODY), " (Run", RUN_TYPE, SppGroup, ")"),
       TRUE~str_to_title(WATERBODY)
     )
-  ) %>% 
-  distinct(AREA, WATERBODY, SYSTEM_SITE,DisplayName, POP_ID, IS_INDICATOR, CU_INDEX, CU_NAME, EscAvailable) %>% #NOTE: overlapping PINK even and PINK odd?
+  ) %>%
+  distinct(AREA, WATERBODY, SYSTEM_SITE,DisplayName, POP_ID, IS_INDICATOR, 
+           CU_INDEX, CU_NAME, EscAvailable, SppGroup) %>% #NOTE: overlapping PINK even and PINK odd?
   arrange(CU_INDEX, DisplayName)  %>% 
   mutate(
     FontFace = ifelse(IS_INDICATOR == "Y", "bold", "plain"),
@@ -70,7 +68,7 @@ cu.cuts <- which(duplicated(name.master$CU_INDEX) == FALSE) %>% tail(n=-1) - 0.5
 esc.status <- 
   left_join(
   x = pssi.nuseds %>% mutate(WATERBODY = toupper(WATERBODY)),
-  y = name.master %>% select(WATERBODY, POP_ID, DisplayName),
+  y = name.master %>% select(WATERBODY, POP_ID, DisplayName, SppGroup),
   by = join_by(WATERBODY, POP_ID, SppGroup)
 ) %>%
   mutate(
@@ -117,7 +115,7 @@ esc.status <-
       str_detect(ESTIMATE_CLASSIFICATION, "UNKNOWN") ~ "Unknown"
     )
   )  %>% 
-  complete(SPECIES, ANALYSIS_YR, Disp, fill = list(Status = "No Record"))
+  complete(SPECIES, ANALYSIS_YR, DisplayName, fill = list(Status = "No Record"))
 
 
 n.display <- esc.status %>% distinct(StreamName) %>% nrow
@@ -190,7 +188,7 @@ p.monitoring <-   esc.status %>%
     legend.title = element_blank(),
     panel.grid.major.y = element_line(linewidth = name.master$LineWidth , colour =name.master$LineColor)
   )
-# p.monitoring
+p.monitoring
 
 
 
