@@ -9,7 +9,7 @@ nuseds.sites <- read_csv("Data/conservation_unit_system_sites.csv")
 old.schema <- FALSE
 # nuseds <- read_csv(file = file.path(proj.dir, "Data/NuSEDS/20230906/NuSEDS_20230906.csv"))
 
-nuseds <- read_csv("Data/NuSEDS_20240110.csv") %>%
+nuseds <- read_csv("Data/NuSEDS_20240110.csv") %>% #WARNING about NATURAL_FEMALES, and _MALES, don't use these cols
   mutate(Name = str_to_title(WATERBODY)) %>%
   arrange(WATERBODY, SPECIES,ANALYSIS_YR) %>% 
   mutate(

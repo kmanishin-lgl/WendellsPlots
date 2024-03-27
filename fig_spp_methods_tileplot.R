@@ -18,7 +18,7 @@ source('Prep_CU_tileplots.R')
 name.master <- pssi.nuseds %>% 
   # mutate(WATERBODY = toupper(WATERBODY)) %>%  # fix inconsistent Clearwater Creek
   group_by(AREA, WATERBODY, GAZETTED_NAME, LOCAL_NAME_1,LOCAL_NAME_2,SYSTEM_SITE,
-           RUN_TYPE, POP_ID, CU_INDEX, CU_NAME, SPECIES_QUALIFIED, IS_INDICATOR) %>% 
+           RUN_TYPE, POP_ID, CU_INDEX, CU_NAME, SPECIES_QUALIFIED, IS_INDICATOR, SppGroup) %>% 
   summarize(
     EscAvailable = any(Escapement >0),
     .groups = "drop"
@@ -71,7 +71,7 @@ esc.status <-
   left_join(
   x = pssi.nuseds %>% mutate(WATERBODY = toupper(WATERBODY)),
   y = name.master %>% select(WATERBODY, POP_ID, DisplayName),
-  by = join_by(WATERBODY, POP_ID)
+  by = join_by(WATERBODY, POP_ID, SppGroup)
 ) %>%
   mutate(
     StreamName = factor(

@@ -1,6 +1,7 @@
+view.data = FALSE
 
-nuseds <- read_csv(file = "Data/NuSEDS_20240110.csv")
-nuseds$WATERBODY <- str_to_title(nuseds$WATERBODY)
+# nuseds <- read_csv(file = "Data/NuSEDS_20240110.csv")
+# nuseds$WATERBODY <- str_to_title(nuseds$WATERBODY)
 mdfa_streams <- read.csv("Data/NuSEDs_MDFA.csv",
                          colClasses = c("SPECIES_QUALIFIED" = "factor"))
 # names(mdfa_streams)[names(mdfa_streams) == 'SPECIES_QUALIFIED'] <- 'SPECIES'
@@ -151,8 +152,8 @@ pssi.nuseds <- left_join(
 
 
 if (view.data){
-  pssi.nuseds %>% 
-    select(AREA, WATERBODY, ANALYSIS_YR, Epoch, SPECIES, SppGroup, Escapement, MaxEsc, Pmax, MaxEsc_Epoch, Pmax_Epoch) %>% 
+  pssi.nuseds %>%
+    select(AREA, WATERBODY, ANALYSIS_YR, Epoch, SPECIES, SppGroup, Escapement, MaxEsc, Pmax, MaxEsc_Epoch, Pmax_Epoch) %>%
     View(title = "pssi.nuseds")
 }
 
