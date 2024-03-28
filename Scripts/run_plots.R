@@ -25,12 +25,21 @@ if (!dir.exists(tab.dir)) dir.create(tab.dir, recursive = FALSE)
 
 
 # LOAD DATA:  -----------------------------------------------------
-# NuSEDS and NuSEDS CU Sites
-source(file.path(script.dir, "Prep_CU_tileplots.R"))
+#Read in conservation unit data from nuseds
+mdfa_streams <- read.csv("Data/NuSEDs_MDFA.csv",
+                         colClasses = c("SPECIES_QUALIFIED" = "factor"))
+
+#read in list of streams identifies with First Nations
+pssi <- read.csv("Data/PSSI_streams.csv")
+pssi$WATERBODY <- str_squish(pssi$WATERBODY) %>%str_to_upper()
+
 
 for (spp in c("Chinook", "Coho", "Chum","Sockeye","Steelhead")) {
-  # spp = "Sockeye"
+  spp = "Chinook"
   message("Processing ", spp,  " CU data")
+  source(file.path(script.dir, "Prep_CU_tileplots.R"))
+ message(missed,  " data not available in NuSEDs")
+  
   
   #--- FIGURE: Species Monitoring Map ---
   

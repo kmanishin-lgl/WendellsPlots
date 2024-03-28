@@ -1,16 +1,6 @@
-view.data = FALSE
 
-# nuseds <- read_csv(file = "Data/NuSEDS_20240110.csv")
-# nuseds$WATERBODY <- str_to_title(nuseds$WATERBODY)
-mdfa_streams <- read.csv("Data/NuSEDs_MDFA.csv",
-                         colClasses = c("SPECIES_QUALIFIED" = "factor"))
-# names(mdfa_streams)[names(mdfa_streams) == 'SPECIES_QUALIFIED'] <- 'SPECIES'
-pssi <- read.csv("Data/PSSI_streams.csv")
-pssi$WATERBODY <- str_squish(pssi$WATERBODY) %>%str_to_upper()
 
-# mdfa_streams$SPECIES <- fct_recode(mdfa_streams$SPECIES,
-#                                    Chum = "CM", Coho ="CO", Pink = "PKE", Chinook = "CK",
-#                                    Pink = "PKO", Sockeye = "SEL", Sockeye = "SER")
+pssi.spp <- pssi %>% filter(SPECIES == spp)
 
 #all streams in MDFA----------------------------------------------------------
 mdfa.sites <- mdfa_streams %>%  
@@ -20,7 +10,7 @@ mdfa.sites <- mdfa_streams %>%
 
 #PSSI interest sites---------------------------------------------------------
 pssi.sites <-  mdfa.sites %>%  
-  filter(SYSTEM_SITE %in% (pssi$WATERBODY))  %>%
+  filter(SYSTEM_SITE %in% (pssi.spp$WATERBODY))  %>%
   # mutate(CU_INDEX = paste(SPECIES_QUALIFIED, CU_INDEX, sep ="-")) %>% 
   rename(CU_INDEX = FULL_CU_IN) %>% 
   add_column(SPECIES = NA, .before = 'SPECIES_QUALIFIED') %>% 
@@ -133,20 +123,20 @@ present.streams <- pssi.nuseds %>%
   select(WATERBODY) %>%
   unique()
 
-miss.priority <- setdiff(str_squish(pssi$WATERBODY), present.streams$WATERBODY)
+missed <- setdiff(str_squish(pssi.spp$WATERBODY), present.streams$WATERBODY)
 
 
 # Update NuSEDS Escapement 
 
 # # Complete any missing priority streams
-# if (exists('miss.priority')) {
-#   if (length(miss.priority)>0) {
+# if (exists('missed')) {
+#   if (length(missed)>0) {
 #     
 #     # warning("Priority infill uses RunType = 'Spring' instead of 'Fall' - Cowichan workaround.")
 #     
 #     pssi.nuseds <- pssi.nuseds %>%
 #       complete(
-#         WATERBODY = miss.priority,
+#         WATERBODY = missed,
 #         SPECIES = "Chinook",
 #         Year = 2020,
 #         RunType = "Fall",

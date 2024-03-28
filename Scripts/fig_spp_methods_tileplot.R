@@ -130,7 +130,7 @@ if(spp == "Sockeye") {
     mutate(Duplicated = duplicated(CU_INDEX)) %>% 
     filter(!Duplicated | Order == max(Order)) %>% 
     mutate(
-      midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2-1, last(x)-.5)
+      midpoint = c( (tail(Order, n = -1) + head(Order, n=-1)) / 2-1, last(Order)-.5)
     ) %>% 
     filter(!is.na(midpoint)) %>% 
     select(CU_INDEX, CU_NAME, midpoint)
@@ -190,8 +190,8 @@ p.monitoring <-   esc.status %>%
   guides(color="none") +
   theme_classic(14)+
   theme(
-    plot.margin = unit(c(0.5, buffer, 0.5, 0.5), units = "lines") ,
-    axis.title = element_blank(),
+    plot.margin = unit(c(0.5, buffer, 1, 1), units = "lines") ,
+    axis.title = c(axis.title.x = "Year", axis.title.y = "Stream"), 
     axis.text.y = element_text(size = 9, face = name.master$FontFace),
     legend.position = "bottom",
     legend.title = element_blank(),
