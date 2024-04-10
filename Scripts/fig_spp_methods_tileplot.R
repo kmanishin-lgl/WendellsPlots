@@ -191,7 +191,9 @@ p.monitoring <-   esc.status %>%
   theme_classic(14)+
   theme(
     plot.margin = unit(c(0.5, buffer, 1, 1), units = "lines") ,
-    axis.title = c(axis.title.x = "Year", axis.title.y = "Stream"), 
+    # axis.title = c(axis.title.x = "Year", axis.title.y = "Stream"), 
+    axis.title = element_blank() ,
+    
     axis.text.y = element_text(size = 9, face = name.master$FontFace),
     legend.position = "bottom",
     legend.title = element_blank(),

@@ -1,3 +1,28 @@
+#Wendell Challenger's NuSEDs processing and tile plot production
+#Adapted by Kaitlyn Manishin
+
+##'Required R Scripts:
+##'Prep_CU_tileplots.R #data manipulation
+##'data_nuseds.R #reads in NuSEDS and does some cleaning
+##'fig_spp_methods_tileplot.R #creates tile plot that show methods
+##'fig_spp_pmax_tileplot.R #creates tile plot that shows relative abundance
+##'
+##'Required Data:---------------------
+###'NuSEDs locations data-------------
+##'conservation_unit_system_sites.csv 
+##'https://open.canada.ca/data/en/dataset/c48669a3-045b-400d-b730-48aafe8c5ee6/resource/0ba6773e-ddf6-3012-87bf-df707eb1ec4c
+###'Area Specific NuSEDs csv-----------
+##'https://open.canada.ca/data/en/dataset/c48669a3-045b-400d-b730-48aafe8c5ee6
+##'NuSEDs read in at line 12 of data_nuseds if you need to adjust file name
+##'Don't upload NuSEDs to GitHub, its too big
+###'List of streams and species of interest --------------
+###'streams.csv
+###' Read in here on line 43
+
+
+
+#Session set up----------------------------------------------------------------
+
 rm(list=ls())
 library(tidyverse)
 library(scales)
@@ -6,36 +31,38 @@ library(jpeg)
 library(grid)
 library(gridExtra)
 library(openxlsx)
-
 library(extrafont)
-# font_import(pattern = "Archivo") # Run on new systems to add font to R library
+
 loadfonts(device = "win")
 
+view.data <- FALSE #Wendell relic
+
+# LOAD DATA:  -----------------------------------------------------
+#Read in conservation unit data from nuseds
+mdfa_streams <- read.csv("Data/conservation_unit_system_sites.csv",
+                         colClasses = c("SPECIES_QUALIFIED" = "factor"))
+
+#read in list of streams identifies with First Nations
+pssi <- read.csv("Data/streams.csv")
+pssi$WATERBODY <- str_squish(pssi$WATERBODY) %>%str_to_upper()
+
 # Settings ----------------------------------------------------------------
-view.data <- FALSE
+#!!Define your directories here
+proj.dir <-  "~/Analyses" #Project directory, where R Project lives
+fig.dir  <- "Output/test" #where you want you figures to be produced
+tab.dir  <- "Output/tables" #where you want you tables to be produced
+data.dir <- "Data" #where data lives
+script.dir <- "Scripts" #where scripts list
 
-proj.dir <-  "~/Analyses"
-fig.dir  <- "Output/figures"
-tab.dir  <- "Output/tables"
-data.dir <- "Data"
-script.dir <- "Scripts"
-
+#If table and figure directories to not exist this will create
 if (!dir.exists(fig.dir)) dir.create(fig.dir, recursive = TRUE)
 if (!dir.exists(tab.dir)) dir.create(tab.dir, recursive = FALSE)
 
 
-# LOAD DATA:  -----------------------------------------------------
-#Read in conservation unit data from nuseds
-mdfa_streams <- read.csv("Data/NuSEDs_MDFA.csv",
-                         colClasses = c("SPECIES_QUALIFIED" = "factor"))
-
-#read in list of streams identifies with First Nations
-pssi <- read.csv("Data/PSSI_streams.csv")
-pssi$WATERBODY <- str_squish(pssi$WATERBODY) %>%str_to_upper()
 
 
 for (spp in c("Chinook", "Coho", "Chum","Sockeye","Steelhead")) {
-  spp = "Chinook"
+  # spp = "Chinook"
   message("Processing ", spp,  " CU data")
   source(file.path(script.dir, "Prep_CU_tileplots.R"))
  message(missed,  " data not available in NuSEDs")

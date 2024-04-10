@@ -138,9 +138,11 @@ p.pmax <-  ggplot(pmax.dat, aes(x=ANALYSIS_YR, y=StreamName)) +
   scale_fill_brewer(palette = "OrRd"  ) +
   guides(color="none") +
   theme_classic(14)+
+  # xlab =c( "Year")+ 
+  # ylab = c("Stream")+
   theme(
     plot.margin = unit(c(0.5, buffer, 1, 1), units = "lines") ,
-    axis.title = c(axis.title.x = "Year", axis.title.y = "Stream"), 
+    axis.title = element_blank() ,
     axis.text.y = element_text(size = 9, face = name.master$FontFace),
     legend.position = "bottom",
     legend.title = element_blank(),

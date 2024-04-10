@@ -1,83 +1,87 @@
-﻿WATERBODY,SPECIES,RANK
-Carnation Creek,Coho,
-Clemens Creek,Coho,High
-Clemens Creek,Chinook,High
-Clemens Creek,Sockeye,High
-Coeur D'alene Creek,Chinook,High
-Coeur D'alene Creek,Chum,High
-Coeur D'alene Creek,Coho,High
-Coleman Creek,,
-Cosinka Creek,,Moderate
-Effingham River,Chum,High
-Handy Creek,,Moderate
-Henderson Lake,Sockeye,
-Klanawa River,Coho,
-Little Toquart Creek,Chum,
-Mercer Creek,Chum,Moderate
-Nahmint River ,Chinook,High
-Nahmint River ,Chum,High
-Nahmint River ,Sockeye,High
-Pachena River,Coho,
-Ritherdon Creek,Chum,Low
-Ritherdon Creek,Coho,Low
-Sandy Creek,Chum,High
-Sandy Creek,Coho,High
-Sarita River,Chinook,High
-Sarita River,Chum,High
-Smith Creek,Coho,High
-Smith Creek,Chum,High
-Snug Basin Creek,Coho,High
-Snug Basin Creek,Chum,High
-Spencer Creek,,Moderate
-Sugsaw Creek,Chum,
-Toquart River,Chum,
-Toquart River,Coho,
-Twin Rivers East Creek,Chum,
-Thornton Creek,Chinook,High
-Thornton Creek,Chum,High
-Uchuck Creek,Coho,High
-Uchuck Creek,Chinook,High
-Uchuck Creek,Chum,High
-Vernon Bay Creek,Coho,Moderate
-Vernon Bay Creek,Chum,Moderate
-West Creek,Coho,Moderate
-West Creek,Chum,Moderate
-Artlish River,Chinook,High
-Artlish River,Chum,High
-Artlish River,Coho,High
-Kaouk River,Chinook,Moderate
-Kaouk River,Chum,Moderate
-Kaouk River,Coho,Moderate
-Malksope River,Chum,High
-Malksope River,Coho,High
-Tahsish River,Chinook,High
-Tahsish River,Chum,High
-Tahsish River,Coho,High
-Kauwinch River,Chum,High
-Kashutl River,Chum,Moderate
-Amai Creek,Chum,Moderate
-Chamiss Creek,Chum,High
-Clanninick Creek,Chum,Moderate
-Easy Creek,Chum,Low
-Narrowgut Creek,"Chum, Sockeye",Low
-Ououkinsh River,Chum,High
-Jansen Lake Creek,Sockeye,Moderate
-Power River,Sockeye,Moderate
-Nasparti River,Chum,Moderate
-Nasparti River,Coho,Moderate
-Nasparti River,Chinook,Moderate
-Nasparti River,Steelhead,Moderate
-Battle Bay River,Coho,Moderate
-Battle Bay River,Chinook,Moderate
-Battle Bay River,Chum,Moderate
-Cachalot Creek,Chum,Moderate
-Cachalot Creek,Coho,Moderate
-Elaine Creek,Chum,Low
-Elaine Creek,Coho,Low
-Elaine Creek,Chinook,Low
-Amos Creek,Chinook,High
-Amos Creek,Coho,High
-Kapoose Creek,Chinook,High
-Kapoose Creek,Coho,High
-Yaku River,Chum,Low
-Yaku River,Coho,Low
+﻿WATERBODY,SPECIES,Interest,DataQual,Enhanced,MarkPerc,Average09
+Carnation Creek,Coho,High,High,,,134
+Clemens Creek,Coho,High,High,,,1033
+Clemens Creek,Chinook,High,High,Yes,1,74
+Clemens Creek,Sockeye,High,Moderate,,,12035
+Coeur D'alene Creek,Chinook,High,Low,,,
+Coeur D'alene Creek,Chum,High,Low,,,
+Coeur D'alene Creek,Coho,High,Low,,,
+Coleman Creek,Chum,Low,Low,,,
+Cosinka Creek,Chum,Moderate,Low,,,
+Cosinka Creek,Coho,Moderate,Low,,,
+Effingham River,Chum,High,Moderate,,,817
+Handy Creek,Chum,Moderate,Low,,,
+Handy Creek,Coho,Moderate,Low,,,
+Henderson Lake,Sockeye,High,High,,,10487
+Klanawa River,Chum,Low,Low,Yes,0,0
+Little Toquart Creek,Chum,Low,Moderate,,,2155
+Mercer Creek,Chum,Moderate,Low,,,
+Nahmint River ,Chinook,High,High,Yes,1,826
+Nahmint River ,Chum,High,High,,,3312
+Nahmint River ,Sockeye,High,High,,,610
+Pachena River,Coho,High,Moderate,Yes,0,227
+Ritherdon Creek,Chum,Low,Low,,,
+Ritherdon Creek,Coho,Low,Low,,,
+Sandy Creek,Chum,High,Low,,,
+Sandy Creek,Coho,High,Low,,,
+Sarita River,Chinook,High,High,Yes,1,2982
+Sarita River,Chum,High,High,,,3872
+Smith Creek,Coho,High,Low,,,6
+Smith Creek,Chum,High,Moderate,Yes,0,1289
+Snug Basin Creek,Coho,High,Low,,,
+Snug Basin Creek,Chum,High,Low,,,
+Spencer Creek,Chum,Moderate,Low,,,
+Spencer Creek,Coho,Moderate,Low,,,
+Sugsaw Creek,Chum,High,Low,Yes,0,353
+Toquart River,Chum,Low,High,,,3707
+Toquart River,Coho,Low,High,,,737
+Twin Rivers East Creek,Chum,Low,Moderate,Yes,0,215
+Thornton Creek,Chinook,High,Low,Yes,1,339
+Thornton Creek,Chum,High,Low,Yes,0,161
+Uchuck Creek,Coho,High,Low,,,19
+Uchuck Creek,Chinook,High,Low,,,
+Uchuck Creek,Chum,High,Low,,,4
+Vernon Bay Creek,Coho,Moderate,Low,,,
+Vernon Bay Creek,Chum,Moderate,Low,,,
+West Creek,Coho,Moderate,Low,,,
+West Creek,Chum,Moderate,Low,,,
+Artlish River,Chinook,High,High,,,305
+Artlish River,Chum,High,High,,,1730
+Artlish River,Coho,High,High,,,1471
+Kaouk River,Chinook,Moderate,High,,,505
+Kaouk River,Chum,Moderate,High,,,2760
+Kaouk River,Coho,Moderate,High,,,3014
+Malksope River,Chum,High,Moderate,,,3228
+Malksope River,Coho,High,Moderate,,,1395
+Tahsish River,Chinook,High,High,,,1362
+Tahsish River,Chum,High,High,,,5756
+Tahsish River,Coho,High,High,,,4097
+Kauwinch River,Chum,High,Low,,,373
+Kashutl River,Chum,Moderate,Low,,,138
+Amai Creek,Chum,Moderate,Low,,,
+Chamiss Creek,Chum,High,Low,,,135
+Clanninick Creek,Chum,Moderate,Low,,,
+Easy Creek,Chum,Low,Low,,,
+Narrowgut Creek,Chum,Low,Low,,,
+Narrowgut Creek,Sockeye,Low,Low,,,
+Ououkinsh River,Chum,High,Low,,,
+Jansen Lake Creek,Sockeye,Moderate,Low,,,
+Power River,Sockeye,Moderate,Low,,,
+Nasparti River,Chum,Moderate,Low,,,
+Nasparti River,Coho,Moderate,Low,,,
+Nasparti River,Chinook,Moderate,Low,,,
+Nasparti River,Steelhead,Moderate,Low,,,
+Battle Bay River,Coho,Moderate,Low,,,
+Battle Bay River,Chinook,Moderate,Low,,,
+Battle Bay River,Chum,Moderate,Low,,,
+Cachalot Creek,Chum,Moderate,Low,,,
+Cachalot Creek,Coho,Moderate,Low,,,
+Elaine Creek,Chum,Low,Low,,,
+Elaine Creek,Coho,Low,Low,,,
+Elaine Creek,Chinook,Low,Low,,,
+Amos Creek,Chinook,High,Low,,,
+Amos Creek,Coho,High,Low,,,
+Kapoose Creek,Chinook,High,Low,,,
+Kapoose Creek,Coho,High,Low,,,
+Yaku River,Chum,Low,Low,,,
+Yaku River,Coho,Low,Low,,,
