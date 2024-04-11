@@ -49,7 +49,7 @@ pssi$WATERBODY <- str_squish(pssi$WATERBODY) %>%str_to_upper()
 # Settings ----------------------------------------------------------------
 #!!Define your directories here
 proj.dir <-  "~/Analyses" #Project directory, where R Project lives
-fig.dir  <- "Output/test" #where you want you figures to be produced
+fig.dir  <- "Output/pascale" #where you want you figures to be produced
 tab.dir  <- "Output/tables" #where you want you tables to be produced
 data.dir <- "Data" #where data lives
 script.dir <- "Scripts" #where scripts list
